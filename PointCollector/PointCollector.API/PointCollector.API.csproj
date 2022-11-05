@@ -7,10 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\PointCollector.Contracts\PointCollector.Contracts.csproj" />
     <ProjectReference Include="..\PointCollector.Application\PointCollector.Application.csproj" />
     <ProjectReference Include="..\PointCollector.Infrastructure\PointCollector.Infrastructure.csproj" />
