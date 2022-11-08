@@ -1,21 +1,22 @@
 
+using PointCollector.API.Filters;
 using PointCollector.Application;
 using PointCollector.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+{
+    builder.Services
+        .AddApplication()
+        .AddInfrastructure(builder.Configuration);
 
-builder.Services
-    .AddApplication()
-    .AddInfrastructure();
-
-builder.Services.AddControllers();
+    builder.Services.AddControllers(options => options.Filters.Add<ErrorHandlingFilterAttribute>());
+}
 
 var app = builder.Build();
-
-app.UseHttpsRedirection();
-
-// app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();
+{
+    //app.UseMiddleware<ErrorHandlingMiddleware>();
+    app.UseHttpsRedirection();
+    // app.UseAuthorization();
+    app.MapControllers();
+    app.Run();
+}

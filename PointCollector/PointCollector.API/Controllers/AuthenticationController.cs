@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PointCollector.Contracts.Authentication;
 using PointCollector.Application.Services.Authentication;
+using PointCollector.API.Filters;
 
 namespace PointCollector.API.Controllers;
 
@@ -37,17 +38,17 @@ public class AuthenticationController : ControllerBase
     public IActionResult Login(LoginRequest request)
     {
         var authResult = _authenticaionService.Login(
-            request.Email, 
-            request.Password);
-
+                    request.Email, 
+                    request.Password);
+        
         var response = new AuthenticationResponse(
-            authResult.Id, 
-            authResult.FirstName, 
-            authResult.LastName, 
-            authResult.Email, 
-            authResult.Token);
-            
+                    authResult.Id, 
+                    authResult.FirstName, 
+                    authResult.LastName, 
+                    authResult.Email, 
+                    authResult.Token);
+        
         return Ok(response);
     }
-
 }
+
