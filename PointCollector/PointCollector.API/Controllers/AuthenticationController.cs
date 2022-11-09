@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using PointCollector.Contracts.Authentication;
 using PointCollector.Application.Services.Authentication;
-using PointCollector.API.Filters;
+using ErrorOr;
 
 namespace PointCollector.API.Controllers;
 
-[ApiController]
+
 [Route("auth")]
-public class AuthenticationController : ControllerBase 
+public class AuthenticationController : ApiController
 {
     private readonly IAuthenticationService _authenticaionService;
     public AuthenticationController(IAuthenticationService authenticaionService)
@@ -18,37 +18,41 @@ public class AuthenticationController : ControllerBase
     [HttpPost("register")]
     public IActionResult Register(RegistrationRequest request)
     {
-        var authResult = _authenticaionService.Register(
-            request.FirstName, 
+        ErrorOr<AuthenticationResult> registerResult = _authenticaionService.Register(
+            request.FirstName,
             request.LastName, 
             request.Email, 
             request.Password);
 
-        var response = new AuthenticationResponse(
-            authResult.Id, 
-            authResult.FirstName, 
-            authResult.LastName, 
-            authResult.Email, 
-            authResult.Token);
-
-        return Ok(response);
+        
+        return registerResult.Match(
+            authResult => Ok(MapAuthResult(authResult)),
+            errors => Problem(errors));
     }
+
+    
 
     [HttpPost("login")]
     public IActionResult Login(LoginRequest request)
     {
-        var authResult = _authenticaionService.Login(
+        ErrorOr<AuthenticationResult> loginResult = _authenticaionService.Login(
                     request.Email, 
                     request.Password);
         
-        var response = new AuthenticationResponse(
-                    authResult.Id, 
-                    authResult.FirstName, 
-                    authResult.LastName, 
-                    authResult.Email, 
-                    authResult.Token);
         
-        return Ok(response);
+        return loginResult.Match(
+            authResult => Ok(MapAuthResult(authResult)),
+            errors => Problem(errors));
+    }
+
+    private static AuthenticationResponse MapAuthResult(AuthenticationResult authResult)
+    {
+        return new AuthenticationResponse(
+                authResult.Id,
+                authResult.FirstName,
+                authResult.LastName,
+                authResult.Email,
+                authResult.Token);
     }
 }
 
