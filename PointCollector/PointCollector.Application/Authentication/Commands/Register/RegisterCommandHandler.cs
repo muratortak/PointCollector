@@ -35,13 +35,9 @@ namespace PointCollector.Application.Authentication.Commands.Register
 
             _userRepository.Add(user);
             // Generat Token
-            var userId = user.Id;
-            var token = _jwtTokenGenerator.GenerateToken(userId, command.firstName, command.lastName);
+            var token = _jwtTokenGenerator.GenerateToken(user);
             return new AuthenticationResult(
-                userId,
-                command.firstName,
-                command.lastName,
-                command.email,
+                user,
                 token);
         }
     }

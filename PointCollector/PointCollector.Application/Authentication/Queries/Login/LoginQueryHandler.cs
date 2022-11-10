@@ -31,13 +31,10 @@ namespace PointCollector.Application.Authentication.Queries.Login
                 return Errors.User.InvalidEmailOrPassword;
             }
 
-            var token = _jwtTokenGenerator.GenerateToken(user.Id, user.FirstName, user.LastName);
+            var token = _jwtTokenGenerator.GenerateToken(user);
 
             return new AuthenticationResult(
-                user.Id,
-                user.FirstName,
-                user.LastName,
-                query.email,
+                user,
                 token);
         
         }
