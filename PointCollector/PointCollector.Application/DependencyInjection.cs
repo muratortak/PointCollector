@@ -1,14 +1,14 @@
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using PointCollector.Application.Services.Authentication;
 
-namespace PointCollector.Application;
-
-public static class DependencyInjection
+namespace PointCollector.Application
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static class DependencyInjection
     {
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
-
-        return services;
+        public static IServiceCollection AddApplication(this IServiceCollection services)
+        {
+            services.AddMediatR(typeof(DependencyInjection).Assembly);
+            return services;
+        }
     }
 }
