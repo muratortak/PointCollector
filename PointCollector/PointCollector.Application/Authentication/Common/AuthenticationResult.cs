@@ -1,9 +1,8 @@
+using PointCollector.Domain.Entities;
+
 namespace PointCollector.Application.Authentication.Common;
 
 public record AuthenticationResult(
-    Guid Id,
-    string FirstName,
-    string LastName,
-    string Email,
+    User User,
     string Token);
 

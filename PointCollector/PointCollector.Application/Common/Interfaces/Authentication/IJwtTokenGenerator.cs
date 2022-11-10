@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PointCollector.Domain.Entities;
 
 namespace PointCollector.Application.Common.Interfaces.Authentication;
 public interface IJwtTokenGenerator
 {
-    string GenerateToken(Guid userId, string firstName, string lastName);
+    string GenerateToken(User user);
 }
 
