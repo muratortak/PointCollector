@@ -6,11 +6,13 @@ using PointCollector.Application.Authentication.Commands.Register;
 using PointCollector.Application.Authentication.Queries.Login;
 using PointCollector.Application.Authentication.Common;
 using MapsterMapper;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PointCollector.API.Controllers;
 
 
 [Route("auth")]
+[AllowAnonymous]
 public class AuthenticationController : ApiController
 {
     private readonly ISender _mediator;
