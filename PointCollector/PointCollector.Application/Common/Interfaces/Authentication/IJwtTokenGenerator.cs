@@ -1,8 +1,8 @@
-﻿using PointCollector.Domain.Entities;
+﻿using PointCollector.Domain.Entities.Customers;
 
 namespace PointCollector.Application.Common.Interfaces.Authentication;
 public interface IJwtTokenGenerator
 {
-    string GenerateToken(User user);
+    string GenerateToken(Customer user);
 }
 

@@ -1,8 +1,8 @@
-using PointCollector.Domain.Entities;
+using PointCollector.Domain.Entities.Customers;
 
 namespace PointCollector.Application.Authentication.Common;
 
 public record AuthenticationResult(
-    User User,
+    Customer User,
     string Token);
 

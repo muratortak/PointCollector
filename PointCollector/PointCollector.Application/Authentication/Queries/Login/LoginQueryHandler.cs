@@ -4,7 +4,7 @@ using PointCollector.Application.Authentication.Common;
 using PointCollector.Application.Common.Interfaces.Authentication;
 using PointCollector.Application.Common.Interfaces.Persistence;
 using PointCollector.Domain.Common.Errors;
-using PointCollector.Domain.Entities;
+using PointCollector.Domain.Entities.Customers;
 
 
 namespace PointCollector.Application.Authentication.Queries.Login
@@ -21,7 +21,7 @@ namespace PointCollector.Application.Authentication.Queries.Login
         public async Task<ErrorOr<AuthenticationResult>> Handle(LoginQuery query, CancellationToken cancellationToken)
         {
 
-            if (_userRepository.GetUserByEmail(query.email) is not User user)
+            if (_userRepository.GetUserByEmail(query.email) is not Customer user)
             {
                 return Errors.User.InvalidEmailOrPassword;
             }

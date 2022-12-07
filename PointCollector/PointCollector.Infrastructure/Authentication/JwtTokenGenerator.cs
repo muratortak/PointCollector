@@ -1,14 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PointCollector.Application.Common.Interfaces.Authentication;
-using PointCollector.Domain.Entities;
-using System;
-using System.Collections.Generic;
+using PointCollector.Domain.Entities.Customers;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace PointCollector.Infrastructure.Authentication
 {
@@ -19,7 +15,7 @@ namespace PointCollector.Infrastructure.Authentication
         {
             _jwtSettings = jwtOptions.Value;
         }
-        public string GenerateToken(User user)
+        public string GenerateToken(Customer user)
         {
             var signingCredentials = new SigningCredentials
             (

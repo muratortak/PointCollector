@@ -4,7 +4,7 @@ using PointCollector.Application.Authentication.Common;
 using PointCollector.Application.Common.Interfaces.Authentication;
 using PointCollector.Application.Common.Interfaces.Persistence;
 using PointCollector.Domain.Common.Errors;
-using PointCollector.Domain.Entities;
+using PointCollector.Domain.Entities.Customers;
 
 
 namespace PointCollector.Application.Authentication.Commands.Register
@@ -25,16 +25,10 @@ namespace PointCollector.Application.Authentication.Commands.Register
                 return Errors.User.DuplicateEmail;
             }
 
-            var user = new User
-            {
-                FirstName = command.firstName,
-                LastName = command.lastName,
-                Email = command.email,
-                Password = command.password
-            };
+            var user = Customer.Create(command.firstName,command.lastName,command.email,command.password);
 
             _userRepository.Add(user);
-            // Generat Token
+            // Generate Token
             var token = _jwtTokenGenerator.GenerateToken(user);
             return new AuthenticationResult(
                 user,

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PointCollector.Domain.Common.Models
 {
-    public abstract class AggregateRoot<TId> : Entity<TId>
+    public abstract class AggregateRoot<TId> : Entity<TId> where TId : notnull
     {
         protected AggregateRoot(TId id) : base(id)
         {

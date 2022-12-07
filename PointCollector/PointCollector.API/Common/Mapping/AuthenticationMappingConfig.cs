@@ -15,7 +15,10 @@ namespace PointCollector.API.Common.Mapping
             config.NewConfig<LoginRequest, LoginQuery>();
 
             config.NewConfig<AuthenticationResult, AuthenticationResponse>()
-                .Map(dest => dest, src => src.User);
+                .Map(dest => dest.Id, src => src.User.Id.Id) // FIX THIS USE EXPLICIT PROPERTIES FROM AUTHRESULT INSTEAD OF USER OBJECT
+                .Map(dest => dest.FirstName, src => src.User.FirstName)
+                .Map(dest => dest.LastName, src => src.User.LastName)
+                .Map(dest => dest.Email, src => src.User.Email);
         }
     }
 }

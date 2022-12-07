@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Options;
+using PointCollector.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace PointCollector.Infrastructure;
 
@@ -41,6 +43,12 @@ public static class DependencyInjection
                 IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(jwtSettings.Secret))
             });
+
+
+        services.AddDbContext<PointCollectorContext>(options => 
+            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+        
+        services.AddDatabaseDeveloperPageExceptionFilter();
 
         return services;
     }

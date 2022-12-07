@@ -1,24 +1,26 @@
 ﻿using PointCollector.Application.Common.Interfaces.Persistence;
-using PointCollector.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using PointCollector.Domain.Entities.Customers;
+using PointCollector.Infrastructure.Data;
 
 namespace PointCollector.Infrastructure.Persistence
 {
     public class UserRepository : IUserRepository
     {
-        private static readonly List<User> _users = new();
-        public void Add(User user)
+        private readonly PointCollectorContext _context;
+        private static readonly List<Customer> _users = new();
+        public UserRepository(PointCollectorContext context)
         {
-            _users.Add(user);
+            _context = context;
+        }
+        public void Add(Customer user)
+        {
+            _context.Add(user);
+            _context.SaveChanges();
         }
 
-        public User? GetUserByEmail(string email)
+        public Customer? GetUserByEmail(string email)
         {
-            return _users.SingleOrDefault(u => u.Email == email);
+            return _context.Customers.SingleOrDefault(u => u.Email == email);
         }
     }
 }
