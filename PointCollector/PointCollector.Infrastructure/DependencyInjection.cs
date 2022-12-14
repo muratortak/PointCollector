@@ -10,6 +10,8 @@ using System.Text;
 using Microsoft.Extensions.Options;
 using PointCollector.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using PointCollector.Domain.Entities.Customers.Rules;
+using PointCollector.Application.Customers;
 
 namespace PointCollector.Infrastructure;
 
@@ -19,7 +21,7 @@ public static class DependencyInjection
     {
         services.AddAuth(configuration);
         services.AddScoped<IUserRepository, UserRepository>();
-
+        services.AddScoped<ICustomerUniquenessChecker, CustomerUniquenessChecker>();
         return services;
     }
 
