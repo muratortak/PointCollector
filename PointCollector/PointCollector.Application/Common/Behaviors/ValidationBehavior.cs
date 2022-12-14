@@ -1,13 +1,6 @@
 ﻿using ErrorOr;
 using FluentValidation;
 using MediatR;
-using PointCollector.Application.Authentication.Commands.Register;
-using PointCollector.Application.Authentication.Common;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PointCollector.Application.Common.Behaviors
 {

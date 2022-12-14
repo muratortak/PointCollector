@@ -1,5 +1,6 @@
 ﻿using PointCollector.Domain.Common.Interfaces;
 using PointCollector.Domain.Common.Models;
+using PointCollector.Domain.Entities.Customers.Rules;
 using PointCollector.Domain.Entities.Customers.ValueObjects;
 
 namespace PointCollector.Domain.Entities.Customers
@@ -20,8 +21,10 @@ namespace PointCollector.Domain.Entities.Customers
             Password = password;
         }
 
-        public static Customer Create(string firstName, string lastName, string email, string password)
+        public static Customer Create(string firstName, string lastName, string email, string password, ICustomerUniquenessChecker customerUniquenessChecker)
         {
+            CheckRule(new CustomerEmailMustBeUniqueRule(customerUniquenessChecker, email));
+
             return new Customer(firstName, lastName, email, password);
         } 
 
@@ -30,5 +33,10 @@ namespace PointCollector.Domain.Entities.Customers
         public string LastName { get; set; } = null!; 
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
+
+        private void CustomerExistsException()
+        {
+            throw new CustomerException($"Username exists");
+        }
     }
 }

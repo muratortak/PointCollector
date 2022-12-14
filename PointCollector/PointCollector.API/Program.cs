@@ -3,6 +3,7 @@ using PointCollector.API;
 using PointCollector.API.Errors;
 using PointCollector.Application;
 using PointCollector.Infrastructure;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 {
@@ -14,6 +15,15 @@ var builder = WebApplication.CreateBuilder(args);
     // TODO: Can be moved in to AddPresentation DI class...
     builder.Services.AddControllers();
     builder.Services.AddSingleton<ProblemDetailsFactory, PointCollectorProblemDetailsFactory>();
+
+    var logger = new LoggerConfiguration()
+        .ReadFrom.Configuration(builder.Configuration)
+        .Enrich.FromLogContext()
+        .CreateLogger();
+
+    builder.Logging.ClearProviders();
+    builder.Logging.AddSerilog(logger);
+    builder.Services.AddSingleton(Log.Logger);
 }
 
 var app = builder.Build();

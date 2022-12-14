@@ -11,10 +11,12 @@ namespace PointCollector.API.Errors
     public class PointCollectorProblemDetailsFactory : ProblemDetailsFactory
     {
         private readonly ApiBehaviorOptions _options;
+        private readonly ILogger<PointCollectorProblemDetailsFactory> _logger;
 
-        public PointCollectorProblemDetailsFactory(IOptions<ApiBehaviorOptions> options)
+        public PointCollectorProblemDetailsFactory(IOptions<ApiBehaviorOptions> options, ILogger<PointCollectorProblemDetailsFactory> logger)
         {
             _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+            _logger = logger;
         }
 
         public override ProblemDetails CreateProblemDetails(
@@ -78,6 +80,7 @@ namespace PointCollector.API.Errors
 
         private void ApplyProblemDetailsDefaults(HttpContext httpContext, ProblemDetails problemDetails, int statusCode)
         {
+            _logger.LogError($"ApplyProblemDetailsDefaults error: {problemDetails.Title}");
             problemDetails.Status ??= statusCode;
 
             if (_options.ClientErrorMapping.TryGetValue(statusCode, out var clientErrorData))
