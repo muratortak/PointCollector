@@ -22,19 +22,26 @@ namespace PointCollector.Application.Authentication.Commands.Register
         }
         public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
+            // MOVED THE CHECK TO CUSTOMER ENTITY TO KEEP THE RULES IN DOMAINS
             //if (_userRepository.GetUserByEmail(command.email) is not null)
             //{
             //    return Errors.User.DuplicateEmail;
             //}
+            try
+            {
+                var user = Customer.Create(command.firstName,command.lastName,command.email,command.password, _customerUniquenessChecker);
 
-            var user = Customer.Create(command.firstName,command.lastName,command.email,command.password, _customerUniquenessChecker);
-
-            _userRepository.Add(user);
-            // Generate Token
-            var token = _jwtTokenGenerator.GenerateToken(user);
-            return new AuthenticationResult(
-                user,
-                token);
+                _userRepository.Add(user);
+                // Generate Token
+                var token = _jwtTokenGenerator.GenerateToken(user);
+                return new AuthenticationResult(
+                    user,
+                    token);
+            }
+            catch(Exception ex) // refactor this to DulicateEmailException ?
+            {
+                return Errors.User.DuplicateEmail;
+            }
         }
     }
 }
