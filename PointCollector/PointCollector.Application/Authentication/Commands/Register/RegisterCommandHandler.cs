@@ -5,6 +5,7 @@ using PointCollector.Application.Common.Interfaces.Authentication;
 using PointCollector.Application.Common.Interfaces.Persistence;
 using PointCollector.Domain.Common.Errors;
 using PointCollector.Domain.Entities.Customers;
+using PointCollector.Domain.Entities.Customers.Exceptions;
 using PointCollector.Domain.Entities.Customers.Rules;
 
 namespace PointCollector.Application.Authentication.Commands.Register
@@ -38,7 +39,7 @@ namespace PointCollector.Application.Authentication.Commands.Register
                     user,
                     token);
             }
-            catch(Exception ex) // refactor this to DulicateEmailException ?
+            catch(CustomerEmailMustBeUniqueException ex) // refactor this to DulicateEmailException ?
             {
                 return Errors.User.DuplicateEmail;
             }

@@ -1,5 +1,6 @@
 ﻿using PointCollector.Domain.Common.Interfaces;
 using PointCollector.Domain.Common.Models;
+using PointCollector.Domain.Entities.Customers.Exceptions;
 using PointCollector.Domain.Entities.Customers.Rules;
 using PointCollector.Domain.Entities.Customers.ValueObjects;
 
@@ -23,7 +24,10 @@ namespace PointCollector.Domain.Entities.Customers
 
         public static Customer Create(string firstName, string lastName, string email, string password, ICustomerUniquenessChecker customerUniquenessChecker)
         {
-            CheckRule(new CustomerEmailMustBeUniqueRule(customerUniquenessChecker, email));
+            // Any can be used
+            //CheckRule(new CustomerEmailMustBeUniqueRule(customerUniquenessChecker, email));
+            //CheckRule(new CustomerEmailMustBeUniqueRule(customerUniquenessChecker, email), typeof(CustomerEmailMustBeUniqueException));
+            CheckRule(new CustomerEmailMustBeUniqueRule(customerUniquenessChecker, email), typeof(CustomerEmailMustBeUniqueException));
 
             return new Customer(firstName, lastName, email, password);
         } 

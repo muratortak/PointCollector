@@ -49,6 +49,27 @@ namespace PointCollector.Domain.Common.Models
             }
         }
 
+        protected static void CheckRule(IBusinessRule rule, Type ex)
+        {
+            if (rule.IsBroken())
+            {
+                if (ex.IsAssignableTo(typeof(BusinessRuleValidationException)))
+                {
+                    var exceptionConstructor = ex.GetConstructor(new Type[] { rule.GetType() });
+                    throw (Exception)exceptionConstructor.Invoke(new object[] { rule });
+                }
+            }
+        }
+
+        protected static void CheckRule<T>(IBusinessRule rule, T ex) 
+            where T : BusinessRuleValidationException
+        {
+            if (rule.IsBroken())
+            {
+                throw ex;
+            }
+        }
+
         public override bool Equals(object? obj)
         {
             return obj is Entity<TId> entity && Id.Equals(entity.Id);
