@@ -35,7 +35,7 @@ namespace PointCollector.API.Common.ExceptionHandling
                 requestBody = await stream.ReadToEndAsync();
             }
 
-            _logger.LogError($"Unhandled 500 error: Path: {requestPath} ---- Body: {requestBody}");
+            _logger.LogError($"Unhandled 500 error: Path: {requestPath} \n Body: {requestBody} \n Exception: {ex.Message} \n StackTrace: {ex.StackTrace}");
             context.Response.ContentType = "application/json";
             var response = context.Response;
             
