@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PointCollector.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using PointCollector.Infrastructure.Data;
 namespace PointCollector.Infrastructure.Migrations
 {
     [DbContext(typeof(PointCollectorContext))]
-    partial class PointCollectorContextModelSnapshot : ModelSnapshot
+    [Migration("20221224010432_[MIGRATION_NAME]")]
+    partial class MIGRATIONNAME
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,7 +103,8 @@ namespace PointCollector.Infrastructure.Migrations
                                 .HasForeignKey("WorkspaceId");
                         });
 
-                    b.Navigation("Address");
+                    b.Navigation("Address")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

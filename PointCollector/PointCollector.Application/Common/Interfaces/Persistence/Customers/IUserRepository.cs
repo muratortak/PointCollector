@@ -1,6 +1,6 @@
 ﻿using PointCollector.Domain.Entities.Customers;
 
-namespace PointCollector.Application.Common.Interfaces.Persistence
+namespace PointCollector.Application.Common.Interfaces.Persistence.Customers
 {
     public interface IUserRepository
     {

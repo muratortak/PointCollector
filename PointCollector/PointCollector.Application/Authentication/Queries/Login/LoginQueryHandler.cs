@@ -2,7 +2,7 @@
 using MediatR;
 using PointCollector.Application.Authentication.Common;
 using PointCollector.Application.Common.Interfaces.Authentication;
-using PointCollector.Application.Common.Interfaces.Persistence;
+using PointCollector.Application.Common.Interfaces.Persistence.Customers;
 using PointCollector.Domain.Common.Errors;
 using PointCollector.Domain.Entities.Customers;
 
