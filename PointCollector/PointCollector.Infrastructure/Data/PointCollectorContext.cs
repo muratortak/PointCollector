@@ -18,6 +18,7 @@ namespace PointCollector.Infrastructure.Data
 
         }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Workspace> Workspaces { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

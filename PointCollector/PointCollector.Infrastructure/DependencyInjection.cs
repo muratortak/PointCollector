@@ -2,7 +2,7 @@ using Microsoft.Extensions.Configuration;
 using PointCollector.Infrastructure.Persistence;
 using Microsoft.Extensions.DependencyInjection;
 using PointCollector.Infrastructure.Authentication;
-using PointCollector.Application.Common.Interfaces.Persistence;
+using PointCollector.Application.Common.Interfaces.Persistence.Customers;
 using PointCollector.Application.Common.Interfaces.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +12,9 @@ using PointCollector.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using PointCollector.Domain.Entities.Customers.Rules;
 using PointCollector.Application.Customers;
+using PointCollector.Application.Common.Interfaces.Persistence.Workspaces;
+using PointCollector.Domain.Entities.Workspaces.Rules;
+using PointCollector.Application.Workspaces;
 
 namespace PointCollector.Infrastructure;
 
@@ -21,7 +24,9 @@ public static class DependencyInjection
     {
         services.AddAuth(configuration);
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IWorkspaceRepository, WorkspaceRepository>();
         services.AddScoped<ICustomerUniquenessChecker, CustomerUniquenessChecker>();
+        services.AddScoped<IWorkspaceUniquenessChecker, WorkspaceUniquenessChecker>();
         return services;
     }
 
@@ -47,7 +52,7 @@ public static class DependencyInjection
             });
 
 
-        services.AddDbContext<PointCollectorContext>(options => 
+        services.AddDbContext<PointCollectorContext>(options =>
             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         
         services.AddDatabaseDeveloperPageExceptionFilter();

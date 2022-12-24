@@ -1,4 +1,4 @@
-﻿using PointCollector.Application.Common.Interfaces.Persistence;
+﻿using PointCollector.Application.Common.Interfaces.Persistence.Customers;
 using PointCollector.Domain.Entities.Customers.Rules;
 
 namespace PointCollector.Application.Customers

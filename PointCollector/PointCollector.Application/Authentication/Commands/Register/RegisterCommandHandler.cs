@@ -2,7 +2,7 @@
 using MediatR;
 using PointCollector.Application.Authentication.Common;
 using PointCollector.Application.Common.Interfaces.Authentication;
-using PointCollector.Application.Common.Interfaces.Persistence;
+using PointCollector.Application.Common.Interfaces.Persistence.Customers;
 using PointCollector.Domain.Common.Errors;
 using PointCollector.Domain.Entities.Customers;
 using PointCollector.Domain.Entities.Customers.Exceptions;
@@ -23,11 +23,6 @@ namespace PointCollector.Application.Authentication.Commands.Register
         }
         public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
-            // MOVED THE CHECK TO CUSTOMER ENTITY TO KEEP THE RULES IN DOMAINS
-            //if (_userRepository.GetUserByEmail(command.email) is not null)
-            //{
-            //    return Errors.User.DuplicateEmail;
-            //}
             try
             {
                 var user = Customer.Create(command.firstName,command.lastName,command.email,command.password, _customerUniquenessChecker);
@@ -39,7 +34,7 @@ namespace PointCollector.Application.Authentication.Commands.Register
                     user,
                     token);
             }
-            catch(CustomerEmailMustBeUniqueException ex) // refactor this to DulicateEmailException ?
+            catch(CustomerEmailMustBeUniqueException ex)
             {
                 return Errors.User.DuplicateEmail;
             }
