@@ -15,6 +15,9 @@ using PointCollector.Application.Customers;
 using PointCollector.Application.Common.Interfaces.Persistence.Workspaces;
 using PointCollector.Domain.Entities.Workspaces.Rules;
 using PointCollector.Application.Workspaces;
+using PointCollector.Application.Account;
+using PointCollector.Domain.Entities.Account.Rules;
+using PointCollector.Application.Common.Interfaces.Persistence.Account;
 
 namespace PointCollector.Infrastructure;
 
@@ -25,8 +28,10 @@ public static class DependencyInjection
         services.AddAuth(configuration);
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IWorkspaceRepository, WorkspaceRepository>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<ICustomerUniquenessChecker, CustomerUniquenessChecker>();
         services.AddScoped<IWorkspaceUniquenessChecker, WorkspaceUniquenessChecker>();
+        services.AddScoped<IAccountExistForCustomerChecker, AccountExistForCustomerChecker>();
         return services;
     }
 

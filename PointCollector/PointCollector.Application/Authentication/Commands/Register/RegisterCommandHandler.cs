@@ -15,11 +15,13 @@ namespace PointCollector.Application.Authentication.Commands.Register
         private readonly IJwtTokenGenerator _jwtTokenGenerator;
         private readonly IUserRepository _userRepository;
         private readonly ICustomerUniquenessChecker _customerUniquenessChecker;
-        public RegisterCommandHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository, ICustomerUniquenessChecker customerUniquenessChecker)
+        private readonly IPublisher _mediator;
+        public RegisterCommandHandler(IJwtTokenGenerator jwtTokenGenerator, IUserRepository userRepository, ICustomerUniquenessChecker customerUniquenessChecker, IPublisher mediator)
         {
             _jwtTokenGenerator = jwtTokenGenerator;
             _userRepository = userRepository;
             _customerUniquenessChecker = customerUniquenessChecker;
+            _mediator = mediator;
         }
         public async Task<ErrorOr<AuthenticationResult>> Handle(RegisterCommand command, CancellationToken cancellationToken)
         {
@@ -28,6 +30,10 @@ namespace PointCollector.Application.Authentication.Commands.Register
                 var user = Customer.Create(command.firstName,command.lastName,command.email,command.password, _customerUniquenessChecker);
 
                 _userRepository.Add(user);
+                foreach (var domainEvent in user.DomainEvents)
+                {
+                    await _mediator.Publish(domainEvent);
+                }
                 // Generate Token
                 var token = _jwtTokenGenerator.GenerateToken(user);
                 return new AuthenticationResult(

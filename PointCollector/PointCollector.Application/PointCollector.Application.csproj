@@ -18,6 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Account\Common\" />
+    <Folder Include="Account\Queries\" />
+    <Folder Include="Authentication\DomainEventHandlers\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

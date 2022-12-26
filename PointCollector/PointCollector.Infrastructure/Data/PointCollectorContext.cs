@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PointCollector.Domain.Entities.Customers;
 using PointCollector.Domain.Entities.Workspaces;
+using PointCollector.Domain.Entities.Account;
 using PointCollector.Domain.Entities.Customers.ValueObjects;
 using PointCollector.Domain.Entities.Workspaces.ValueObjects;
+using PointCollector.Domain.Entities.Account.ValueObjects;
 
 // Package Manager Console command:
 // https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli
@@ -19,7 +21,7 @@ namespace PointCollector.Infrastructure.Data
         }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Workspace> Workspaces { get; set; }
-
+        public DbSet<Account> Accounts { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Customer>().HasKey(b => b.Id);
@@ -28,6 +30,9 @@ namespace PointCollector.Infrastructure.Data
             modelBuilder.Entity<Workspace>().HasKey(b => b.Id);
             modelBuilder.Entity<Workspace>().Property(c => c.Id).HasConversion(n => n.Id, s => WorkspaceId.Create());
             modelBuilder.Entity<Workspace>().OwnsOne(b => b.Address).ToTable("Address");
+
+            modelBuilder.Entity<Account>().HasKey(b => b.Id);
+            modelBuilder.Entity<Account>().Property(c => c.Id).HasConversion(n => n.Id, s => AccountId.Create());
 
         }
     }
