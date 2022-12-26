@@ -9,5 +9,14 @@ namespace PointCollector.Domain.Common
             Cafe = 2,
             Clothing = 3
         }
+
+        public enum AccountStatus
+        {
+            Inactive = 0,
+            Active = 1,
+            Onhold = 2,
+            Suspended  = 3,
+
+        }
     }
 }

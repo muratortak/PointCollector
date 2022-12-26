@@ -26,7 +26,7 @@ namespace PointCollector.Application.Workspaces.Commands.Register
             try
             {
                 var address = new Address(command.addressStreet, command.addressCity, command.addressState, command.addressCountry, command.addressZipCode);
-                var workspace = Workspace.Create(command.name, (WorkspaceType)command.rtype, null, _workspaceUniquenessChecker);
+                var workspace = Workspace.Create(command.name, (WorkspaceType)command.rtype, address, _workspaceUniquenessChecker);
 
                 await _workspaceRepository.Add(workspace);
                 

@@ -1,5 +1,7 @@
-﻿using PointCollector.Domain.Common.Interfaces;
+﻿using MediatR;
+using PointCollector.Domain.Common.Interfaces;
 using PointCollector.Domain.Common.Models;
+using PointCollector.Domain.Entities.Customers.Events;
 using PointCollector.Domain.Entities.Customers.Exceptions;
 using PointCollector.Domain.Entities.Customers.Rules;
 using PointCollector.Domain.Entities.Customers.ValueObjects;
@@ -24,13 +26,19 @@ namespace PointCollector.Domain.Entities.Customers
 
         public static Customer Create(string firstName, string lastName, string email, string password, ICustomerUniquenessChecker customerUniquenessChecker)
         {
-            // Any can be used
-            //CheckRule(new CustomerEmailMustBeUniqueRule(customerUniquenessChecker, email));
-            //CheckRule(new CustomerEmailMustBeUniqueRule(customerUniquenessChecker, email), typeof(CustomerEmailMustBeUniqueException));
             CheckRule(new CustomerEmailMustBeUniqueRule(customerUniquenessChecker, email), typeof(CustomerEmailMustBeUniqueException));
-
-            return new Customer(firstName, lastName, email, password);
+            var customer = new Customer(firstName, lastName, email, password);
+            customer.AddDomainEvents(new List<INotification> { new UserRegisteredDomainEvent(customer.Id.Id) });
+            return customer;
         } 
+
+        private void AddDomainEvents(List<INotification> domainEvents)
+        {
+            foreach (var domainEvent in domainEvents)
+            {
+                AddDomainEvent(domainEvent);
+            }
+        }
 
         public CustomerId Id { get; private set; }
         public string FirstName { get; set; } = null!;
