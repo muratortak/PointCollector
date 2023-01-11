@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace PointCollector.Domain.Entities.Customers.Exceptions
 {
-    public class CustomerEmailMustBeUniqueException : BusinessRuleValidationException
+    public class PointMustBeGreaterThanEqualToZeroException : BusinessRuleValidationException
     {
-        public CustomerEmailMustBeUniqueException(IBusinessRule brokenRule) : base(brokenRule)
+        public PointMustBeGreaterThanEqualToZeroException(IBusinessRule brokenRule) : base(brokenRule)
         {
         }
+
     }
 }

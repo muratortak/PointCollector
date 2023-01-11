@@ -24,12 +24,14 @@ namespace PointCollector.Infrastructure.Persistence
 
         public async Task<Account>? GetAccountByUserId(Guid userId)
         {
-            return await _context.Accounts.SingleOrDefaultAsync(a => a.UserId == userId);
+            //return await _context.Accounts.SingleOrDefaultAsync(a => a.UserId == userId);
+            return null;
         }
 
         public async Task<Account>? GetActiveAccountByUserId(Guid userId)
         {
-            return await _context.Accounts.SingleOrDefaultAsync(a => a.UserId == userId && a.AccountStatusId == (int)AccountStatus.Active);
+            //return await _context.Accounts.SingleOrDefaultAsync(a => a.UserId == userId && a.AccountStatusId == (int)AccountStatus.Active);
+            return null;
         }
     }
 }

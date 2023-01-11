@@ -27,6 +27,10 @@ namespace PointCollector.Domain.Entities.Workspaces
             CheckRule(new WorkspaceNameMustBeUniqueRule(workspaceUniquenessChecker, name), typeof(WorkspaceNameMustBeUniqueException));
             return new Workspace(name, type, address);
         }
+        public static Workspace Create(string name, WorkspaceType type, Address address)
+        {
+            return new Workspace(name, type, address);
+        }
 
         public WorkspaceId Id { get; set; }
         public string Name { get; set; }
