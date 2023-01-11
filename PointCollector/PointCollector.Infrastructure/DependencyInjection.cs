@@ -58,7 +58,8 @@ public static class DependencyInjection
 
 
         services.AddDbContext<PointCollectorContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            options.UseLazyLoadingProxies()
+                    .UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         
         services.AddDatabaseDeveloperPageExceptionFilter();
 

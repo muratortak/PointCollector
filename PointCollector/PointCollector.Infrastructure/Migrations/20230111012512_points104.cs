@@ -5,7 +5,7 @@
 namespace PointCollector.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class workspaces : Migration
+    public partial class points104 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

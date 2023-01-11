@@ -12,8 +12,8 @@ using PointCollector.Infrastructure.Data;
 namespace PointCollector.Infrastructure.Migrations
 {
     [DbContext(typeof(PointCollectorContext))]
-    [Migration("20221224010432_[MIGRATION_NAME]")]
-    partial class MIGRATIONNAME
+    [Migration("20230111012512_points104")]
+    partial class points104
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,13 +21,36 @@ namespace PointCollector.Infrastructure.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("Proxies:ChangeTracking", false)
+                .HasAnnotation("Proxies:CheckEquality", false)
+                .HasAnnotation("Proxies:LazyLoading", true)
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("PointCollector.Domain.Entities.Account.Account", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AccountStatusId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Accounts");
+                });
+
             modelBuilder.Entity("PointCollector.Domain.Entities.Customers.Customer", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Email")
@@ -51,6 +74,33 @@ namespace PointCollector.Infrastructure.Migrations
                     b.ToTable("Customers");
                 });
 
+            modelBuilder.Entity("PointCollector.Domain.Entities.Customers.ValueObjects.Point", b =>
+                {
+                    b.Property<int>("PointId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PointId"));
+
+                    b.Property<DateTime>("AddedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("CollectedPoint")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("WorkspaceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PointId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.ToTable("Points");
+                });
+
             modelBuilder.Entity("PointCollector.Domain.Entities.Workspaces.Workspace", b =>
                 {
                     b.Property<Guid>("Id")
@@ -66,6 +116,17 @@ namespace PointCollector.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Workspaces");
+                });
+
+            modelBuilder.Entity("PointCollector.Domain.Entities.Customers.ValueObjects.Point", b =>
+                {
+                    b.HasOne("PointCollector.Domain.Entities.Customers.Customer", "Customer")
+                        .WithMany("Points")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("PointCollector.Domain.Entities.Workspaces.Workspace", b =>
@@ -103,8 +164,12 @@ namespace PointCollector.Infrastructure.Migrations
                                 .HasForeignKey("WorkspaceId");
                         });
 
-                    b.Navigation("Address")
-                        .IsRequired();
+                    b.Navigation("Address");
+                });
+
+            modelBuilder.Entity("PointCollector.Domain.Entities.Customers.Customer", b =>
+                {
+                    b.Navigation("Points");
                 });
 #pragma warning restore 612, 618
         }

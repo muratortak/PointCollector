@@ -22,10 +22,16 @@ namespace PointCollector.Infrastructure.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Workspace> Workspaces { get; set; }
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Point> Points { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Point>().HasKey(b => b.PointId);
+            
             modelBuilder.Entity<Customer>().HasKey(b => b.Id);
-            modelBuilder.Entity<Customer>().Property(c => c.Id).HasConversion(n => n.Id, s => CustomerId.Create());
+            //modelBuilder.Entity<Customer>().Property(c => c.Id).HasConversion(n => n.Id, s => CustomerId.Create());
+            modelBuilder.Entity<Customer>().HasMany(b => b.Points).WithOne(c => c.Customer);
+            //modelBuilder.Entity<Customer>().Navigation(b => b.Points).UsePropertyAccessMode(PropertyAccessMode.PreferProperty);
 
             modelBuilder.Entity<Workspace>().HasKey(b => b.Id);
             modelBuilder.Entity<Workspace>().Property(c => c.Id).HasConversion(n => n.Id, s => WorkspaceId.Create());
@@ -34,6 +40,11 @@ namespace PointCollector.Infrastructure.Data
             modelBuilder.Entity<Account>().HasKey(b => b.Id);
             modelBuilder.Entity<Account>().Property(c => c.Id).HasConversion(n => n.Id, s => AccountId.Create());
 
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.EnableSensitiveDataLogging();
         }
     }
 }
